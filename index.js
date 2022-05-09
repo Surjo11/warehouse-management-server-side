@@ -21,6 +21,7 @@ async function run() {
   try {
     await client.connect();
     const itemCollection = client.db("elsolWarehouse").collection("items");
+    // Data get from server
     app.get("/items", async (req, res) => {
       const query = {};
       const cursor = itemCollection.find(query);
@@ -34,15 +35,18 @@ async function run() {
       const item = await itemCollection.findOne(query);
       res.send(item);
     });
+
+    // Data add in server
+    app.post("/items", async (req, res) => {
+      const newItem = req.body;
+      const result = await itemCollection.insertOne(newItem);
+      res.send(result);
+    });
   } finally {
   }
 }
 run().catch(console.dir);
 
-app.get("/", (req, res) => {
-  res.send("running server");
-});
-
 app.listen(port, () => {
-  console.log("Listenting to port", port);
+  console.log("Listening to port", port);
 });
