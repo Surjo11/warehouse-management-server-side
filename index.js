@@ -23,7 +23,13 @@ async function run() {
     const itemCollection = client.db("elsolWarehouse").collection("items");
     // Data get from server
     app.get("/items", async (req, res) => {
-      const query = {};
+      let query;
+      if (req.query.email) {
+        const email = req.query.email;
+        query = { supplieremail: email };
+      } else {
+        query = {};
+      }
       const cursor = itemCollection.find(query);
       const items = await cursor.toArray();
       res.send(items);
