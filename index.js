@@ -56,13 +56,12 @@ async function run() {
       const result = await itemCollection.deleteOne(query);
       res.send(result);
     });
-    // Update Quantity
+
+    // Increase and Decrease Quantity
     app.put("/item/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
       const updatedValue = req.body.newQuantity;
       console.log(updatedValue);
-      // const newQuantity = { quantity: parseInt(req.query.quantity) };
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updateQuantity = {
